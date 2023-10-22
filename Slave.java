@@ -5,24 +5,23 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-public class Client {
+public class Slave {
     public static void main(String[] args) throws IOException {
         //hardcode host name and port number
         args = new String[] {"127.0.0.1", "30121"};
-        if (args.length != 3){
-            System.err.println("Usage: java Client <host name> <port number> <clientNum");
+        if (args.length != 2){
+            System.err.println("Usage: java Client <host name> <port number>");
             System.exit(1);
         }
 
         String hostName = args[0];
         int portNumber = Integer.parseInt(args[1]);
-        int clientNum = Integer.parseInt(args[2]);
 
         //create socket connection between slave and master
         try (
-                Socket clientSocket = new Socket(hostName, portNumber);
-                PrintWriter writerToServer = new PrintWriter(clientSocket.getOutputStream(), true);
-                BufferedReader readFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+                Socket slaveSocket = new Socket(hostName, portNumber);
+                PrintWriter writerToMaster = new PrintWriter(slaveSocket.getOutputStream(), true);
+                BufferedReader readFromMaster = new BufferedReader(new InputStreamReader(slaveSocket.getInputStream()));
                 //BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
         ){
 
